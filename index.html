@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
+  <title>replit</title>
+  <link href="style.css" rel="stylesheet" type="text/css" />
+</head>
+
+<body>
+  
+  <script src="script.js"></script>
+
+  <!--
+  This script places a badge on your repl's full-browser view back to your repl's cover
+  page. Try various colors for the theme: dark, light, red, orange, yellow, lime, green,
+  teal, blue, blurple, magenta, pink!
+  -->
+  <script src="" theme="dark" position="bottom-right"></script>
+</body>
+<br>
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Notifikasi Koin</title>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            let coinCount = localStorage.getItem("coinCount");
+            if (coinCount === null) {
+                coinCount = 100; // default value if not found in localStorage
+            }
+            document.getElementById("coinCount").innerText = coinCount;
+            updateButtonState();
+        });
+
+        function updateCoinCount(newCount) {
+            document.getElementById("coinCount").innerText = newCount;
+            localStorage.setItem("coinCount", newCount);
+        }
+
+        function buyItem(price) {
+            let coinCount = parseInt(document.getElementById("coinCount").innerText);
+
+            if (coinCount >= price) {
+                coinCount -= price;
+                updateCoinCount(coinCount);
+                alert("Item has been successfully purchased!");
+            } else {
+                alert("Not enough coins! You can't buy things.");
+            }
+        }
+
+        function updateButtonState() {
+            const beliButton = document.getElementById("beliButton");
+            const lastPurchase = localStorage.getItem("lastPurchase");
+            const now = new Date().getTime();
+
+            if (lastPurchase && now - lastPurchase < 24 * 60 * 60 * 1000) {
+                const remainingTime = 24 * 60 * 60 * 1000 - (now - lastPurchase);
+                setButtonTimer(remainingTime);
+                beliButton.disabled = true;
+            } else {
+                beliButton.disabled = false;
+                document.getElementById("pembayaran").textContent = "";
+            }
+        }
+
+        function setButtonTimer(duration) {
+            const pembayaran = document.getElementById("pembayaran");
+            let timer = duration, hours, minutes, seconds;
+
+            const interval = setInterval(() => {
+                hours = Math.floor((timer % (24 * 60 * 60 * 1000)) / (60 * 60 * 1000));
+                minutes = Math.floor((timer % (60 * 60 * 1000)) / (60 * 1000));
+                seconds = Math.floor((timer % (60 * 1000)) / 1000);
+
+                pembayaran.textContent = `Wait ${hours} hours, ${minutes} minutes, ${seconds} second  to check in again.`;
+
+                if (timer <= 0) {
+                    clearInterval(interval);
+                    pembayaran.textContent = "";
+                    document.getElementById("beliButton").disabled = false;
+                }
+
+                timer -= 1000;
+            }, 1000);
+        }
+
+        function beliKoin() {
+            const beliButton = document.getElementById("beliButton");
+            const now = new Date().getTime();
+            localStorage.setItem("lastPurchase", now);
+            let coinCount = parseInt(document.getElementById("coinCount").innerText);
+            coinCount += 10;
+            updateCoinCount(coinCount);
+            beliButton.disabled = true;
+            setButtonTimer(24 * 60 * 60 * 1000);
+            alert("Checked in successfully");
+        }
+    </script>
+</head>
+<body>
+    <h1>welcome to rbxlol</h1>
+    <div>
+        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcROjtbFNSDlqtpB3GhBk-Gjpjwv8I9AhTi-AvA_uHLmrg&s" alt="Koin" width="50" height="50">
+        <p>you coins: <span id="coinCount">100</span></p>
+    </div>
+    <br>
+    <div>
+        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRngm5sfeGZyDGCra6ub-zZ-JJjgxr8f97KUYGy5WxMhg&s" alt="Barang" width="100" height="100">
+        <button onclick="buyItem(1000)">Buy 500 robux (1000 coins)</button>
+    </div>
+    <br>
+    <div>
+        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRngm5sfeGZyDGCra6ub-zZ-JJjgxr8f97KUYGy5WxMhg&s" alt="Barang" width="100" height="100">
+        <button onclick="buyItem(900)">Buy 400 robux (900 coins)</button>
+    </div>
+    <br>
+    <div>
+        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRngm5sfeGZyDGCra6ub-zZ-JJjgxr8f97KUYGy5WxMhg&s" alt="Barang" width="100" height="100">
+        <button onclick="buyItem(200)">Buy 80 robux (200 coins)</button>
+    </div>
+</body>
+</html>
+
+<html>
+<head>
+    <title>  </title>
+    <style>
+        body {
+            background-color:skyblue
+        }
+    </style>
+</head>
+<body>
+<br>
+  <!DOCTYPE html>
+<html>
+<head>
+  <br>
+    <html></html>
+  <style>
+    /* Styling untuk tombol */
+    .button {
+      padding: 10px 20px;
+      background-color: #42b983;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 16px;
+    }
+
+    /* Styling untuk konten pembayaran */
+    .pembayaran {
+      margin-top: 20px;
+      font-size: 18px;
+    }
+  </style>
+</head>
+<body>
+  <button id="beliButton" class="button" onclick="beliKoin()">check in</button>
+  <div id="pembayaran" class="pembayaran"></div>
+
+  <script>
+    // Mengambil referensi ke elemen tombol dan konten pembayaran
+    const beliButton = document.getElementById("beliButton");
+    const pembayaran = document.getElementById("pembayaran");
+
+    // Menambahkan event listener pada tombol ketika diklik
+    beliButton.addEventListener("click", function() {
+      // Mengubah konten pembayaran menjadi "Pembayaran: 100 ribu"
+      pembayaran.textContent = "error fitur ini belum di realese, tolong tunggu update";
+    });
+  </script>
+</body>
+</html>
